@@ -2,7 +2,6 @@ package org.lubumall.lubumallcommon.exceptions;
 
 import static org.springframework.http.HttpStatus.*;
 
-import io.grpc.StatusRuntimeException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -71,46 +69,6 @@ public class GlobalHandleException extends ResponseEntityExceptionHandler {
         exceptionResponse, HttpStatus.valueOf(exceptionResponse.getStatus()));
   }
 
-  @ExceptionHandler(StatusRuntimeException.class)
-  public ResponseEntity<ExceptionResponse> handleGrpcException(
-      StatusRuntimeException ex, HttpServletRequest request) {
-    HttpStatus status;
-    String message;
-
-    switch (ex.getStatus().getCode()) {
-      case NOT_FOUND -> {
-        status = HttpStatus.NOT_FOUND;
-        message = "Resource not found: " + ex.getStatus().getDescription();
-      }
-      case INVALID_ARGUMENT -> {
-        status = HttpStatus.BAD_REQUEST;
-        message = "Invalid argument: " + ex.getStatus().getDescription();
-      }
-      case UNAVAILABLE -> {
-        status = HttpStatus.SERVICE_UNAVAILABLE;
-        message = "Service unavailable: " + ex.getStatus().getDescription();
-      }
-      case PERMISSION_DENIED -> {
-        status = HttpStatus.FORBIDDEN;
-        message = "Permission denied: " + ex.getStatus().getDescription();
-      }
-      default -> {
-        status = HttpStatus.INTERNAL_SERVER_ERROR;
-        message = "gRPC error: " + ex.getStatus().getDescription();
-      }
-    }
-
-    ExceptionResponse exceptionResponse =
-        new ExceptionResponse(
-            status,
-            new Date(),
-            message,
-            ex.getStatus().getCode().name(),
-            ex.getMessage(),
-            request.getServletPath());
-
-    return new ResponseEntity<>(exceptionResponse, status);
-  }
 
   private void sendNotification(Exception ex, HttpServletRequest request) {
     try {
