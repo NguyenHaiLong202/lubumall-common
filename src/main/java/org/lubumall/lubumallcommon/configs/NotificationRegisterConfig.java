@@ -54,7 +54,7 @@ public class NotificationRegisterConfig {
               + "Chưa khai báo biến môi trường lubumall.notification-service");
       return;
     }
-    String path = "/v1/notification/discovery/register_batch";
+    String path = "api/v1/notification/discovery/register_batch";
     String apiUrl = host + path;
     System.out.println(host);
     RestTemplate restTemplate = new RestTemplate();
