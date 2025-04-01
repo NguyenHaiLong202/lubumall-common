@@ -6,8 +6,8 @@ import org.lubumall.lubumallcommon.elk.enums.LogAction;
 
 @Data
 public class LogEventData extends LogData {
-  private Long userId;
-  private Long mainId;
+  private String userId;
+  private String mainId;
   private Boolean isSystem = false;
   private LogAction action;
   private String objectName;

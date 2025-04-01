@@ -120,8 +120,8 @@ public class ElkService {
 
   @Async
   public void whiteLogEventSystem(
-      Long userId,
-      Long enterpriseId,
+      String userId,
+      String shopId,
       Class<?> objectName,
       @NotNull LogAction action,
       Object preValue,
@@ -129,7 +129,7 @@ public class ElkService {
       Boolean isSystem) {
     LogEventData data = new LogEventData();
     data.setAction(action);
-    data.setMainId(enterpriseId);
+    data.setMainId(shopId);
     data.setValue(value);
     data.setIsSystem(isSystem);
     data.setPreValue(preValue);
@@ -142,8 +142,8 @@ public class ElkService {
 
   @Async
   public void whiteLogEvent(
-      Long userId,
-      Long enterpriseId,
+      String userId,
+      String shopId,
       Class<?> objectName,
       @NotNull LogAction action,
       Object preValue,
@@ -151,7 +151,7 @@ public class ElkService {
     LogEventData data = new LogEventData();
     data.setAction(action);
     data.setIsSystem(false);
-    data.setMainId(enterpriseId);
+    data.setMainId(shopId);
     data.setValue(value);
     data.setPreValue(preValue);
     data.setUserId(userId);
